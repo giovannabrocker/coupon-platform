@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:9.1.0
+    restart: always
+    container_name: mysql-app
+    env_file: ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbdata_project:/var/lib/mysql
+    ports:
+      - "${DB_PORT_LOCAL}:${DB_PORT_DOCKER}"
+
+  identity-service:
+    build:
+      context: ./backend/identity-service
+    depends_on:
+      - mysql
+    env_file: ./.env
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:${DB_PORT_DOCKER}/${DB_DATABASE_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+
+  coupon-service:
+    build:
+      context: ./backend/coupon-service
+    depends_on:
+      - mysql
+    env_file: ./.env
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:${DB_PORT_DOCKER}/${DB_DATABASE_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+
+  gateway:
+    build:
+      context: ./backend/gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - identity-service
+      - coupon-service
+
+  frontend:
+    build:
+      context: ./frontend/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway
+
+volumes:
+  dbdata_project:

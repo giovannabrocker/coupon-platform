@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: coupon-service
+          uri: http://coupon-service:8082
+          predicates:
+            - Path=/api/coupons/**
+
+        - id: identity-service
+          uri: http://identity-service:8081
+          predicates:
+            - Path=/auth/**, /api/users/**
