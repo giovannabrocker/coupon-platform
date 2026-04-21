@@ -7,8 +7,6 @@ services:
     env_file: ./.env
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - dbdata_project:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
