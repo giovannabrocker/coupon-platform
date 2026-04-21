@@ -1,6 +1,7 @@
 # Coupon Platform
 
 ## Visão Geral
+
 Plataforma backend baseada em microsserviços para gerenciamento de cupons e autenticação de usuários, com um API Gateway centralizando o acesso.
 
 O projeto está em evolução, com integração completa entre autenticação (JWT), gateway e frontend ainda em andamento.
@@ -31,6 +32,7 @@ A aplicação é composta por:
 ## Tecnologias
 
 ### Backend
+
 - Java 21
 - Spring Boot
 - Spring Security (JWT)
@@ -38,11 +40,13 @@ A aplicação é composta por:
 - Spring Data JPA
 
 ### Frontend
+
 - React + Vite
 - MUI
 - Yup
 
 ### Infraestrutura
+
 - Docker
 - Docker Compose
 - MySQL
@@ -65,12 +69,14 @@ A aplicação é composta por:
 ## Endpoints Principais
 
 ### Identity Service
+
 - `POST /auth/login`
 - `POST /auth/register`
 - `GET /api/users`
 - `DELETE /api/users/{id}`
 
 ### Coupon Service
+
 - `GET /api/coupons`
 - `POST /api/coupons`
 - `DELETE /api/coupons/{id}`
@@ -91,10 +97,12 @@ A aplicação é composta por:
 ## Segurança
 
 Implementado:
+
 - Autenticação com JWT no identity-service
 - Controle de acesso por perfil (USER / ADMIN)
 
 Em andamento:
+
 - Validação de JWT no gateway
 - Proteção de rotas entre serviços
 
@@ -103,6 +111,7 @@ Em andamento:
 ## Como Executar
 
 ### Pré-requisitos
+
 - Docker
 - Docker Compose
 
@@ -115,3 +124,6 @@ DB_USER=user
 DB_PASSWORD=senha
 DB_PORT_LOCAL=3307
 DB_PORT_DOCKER=3306
+IDENTITY_DB_URL=jdbc:mysql://mysql:3306/identity_db
+COUPON_DB_URL=jdbc:mysql://mysql:3306/coupon_db
+```
